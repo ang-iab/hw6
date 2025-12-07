@@ -95,5 +95,26 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
+	if (r >= board.size() || c >= board.size()) return false;
 
+	word.push_back(board[r][c]);
+
+	bool inDictionary = dict.find(word) != dict.end();
+	bool isPrefix = prefix.find(word) != prefix.end();
+	bool search = false;
+
+	if (!inDictionary && !isPrefix) return false;
+	
+	if (isPrefix && r + dr < board.size() && c + dc < board.size())
+	{
+		search = boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
+	}
+
+	if (!search && inDictionary)
+	{
+		result.insert(word);
+		return true;
+	}
+
+	return search;
 }
